@@ -1,0 +1,9 @@
+node_modules
+.git
+.bak
+*.bak
+*.bak_*
+ffmpeg.exe
+node.exe
+AutoEditor.exe
+*.zip

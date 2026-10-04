@@ -1,11 +1,32 @@
-<div align="center">
+---
+title: AutoEditor Pro Cloud
+emoji: 🎬
+colorFrom: indigo
+colorTo: blue
+sdk: docker
+app_port: 4000
+pinned: false
+---
 
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
+# 🎬 AutoEditor Pro Cloud
 
-  <h1>Built with AI Studio</h2>
+AutoEditor is a complete browser-based video and audio editing studio powered by Node.js, FFmpeg, and AI.
 
-  <p>The fastest path from prompt to production with Gemini.</p>
+## ✨ Features
+- 🎙️ **Silence Remover**: Upload audio/video, detect silent gaps, and cut automatically.
+- 🎬 **Video Jumpcut & Auto-Sync**: Sync scenes, images, transitions, and voiceover to produce final MP4 videos.
+- ✂️ **Transitions**: Crossfade, Whip, Zoom, and more.
+- 💬 **Dynamic Captions**: Auto-caption styling with embedded fonts.
+- ☁️ **Cloud Ready**: Runs on Docker, Hugging Face Spaces, Render.com, or any VPS.
 
-  <a href="https://aistudio.google.com/apps">Start building</a>
+## 🚀 Running Locally
+```bash
+Start-AutoEditor.bat
+```
+Visit `http://localhost:4000`
 
-</div>
+## 🐳 Running with Docker
+```bash
+docker build -t auto-editor .
+docker run -p 4000:4000 auto-editor
+```

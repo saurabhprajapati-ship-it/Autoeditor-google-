@@ -1,0 +1,17 @@
+# Windows executables (Cloud server uses Linux node & ffmpeg)
+*.exe
+ffmpeg.exe
+node.exe
+AutoEditor.exe
+
+# Backups and zip files
+*.bak
+*.bak_*
+*.tmp
+*.zip
+
+# System and cache files
+__pycache__/
+*.pyc
+.DS_Store
+Thumbs.db

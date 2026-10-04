@@ -1,0 +1,8 @@
+{
+  "name": "AutoEditor Pro",
+  "description": "AI Video and Audio Studio with silence removal, video jumpcut, and auto-sync",
+  "permissions": [],
+  "capabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
