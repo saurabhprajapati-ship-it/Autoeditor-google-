@@ -54,7 +54,16 @@ Please see the 3.x to 4.x migration guide for details on how to update your app.
 duration ${i[g].duration}
 `,g===i.length-1&&(d+=`file '${m[g]}'
 `);await Je.promises.writeFile(Ie.default.join(t,"concat.txt"),d);let h="";if(e.assSubtitles&&typeof e.assSubtitles==="string"&&e.assSubtitles.trim().length>0){await Je.promises.copyFile(Uk,Ie.default.join(t,_s));await Je.promises.writeFile(Ie.default.join(t,"captions.ass"),e.assSubtitles,"utf8");h="subtitles=captions.ass:fontsdir=."}else if(Array.isArray(o)&&o.length){let{filter:g,files:b}=a0(o,s,n,r,p,c,l);await Je.promises.copyFile(Uk,Ie.default.join(t,_s));for(let y of b)await Je.promises.writeFile(Ie.default.join(t,y.name),y.text);h=g}let v=await Promise.all(i.map((g,b)=>g.gap||!Cn(m[b])?Promise.resolve(!1):Jk(t,m[b])));return{paths:m,audioName:u,capChain:h,audible:v}}function e5(t,e){let a=t.toString(),i=null,n=[...a.matchAll(/out_time_us=(\d+)/g)].pop();if(n)i=+n[1];else{let r=[...a.matchAll(/out_time=(\d+):(\d+):(\d+(?:\.\d+)?)/g)].pop();r&&(i=(+r[1]*3600+ +r[2]*60+parseFloat(r[3]))*1e6)}return i==null||!(e>0)?null:Math.min(1,i/1e6/e)}function d0(t,e,a,i,n={}){let r=n.threads>0?n.threads:0,o=[...e];if(r){let f=o.lastIndexOf("output.mp4");f>=0&&o.splice(f,0,"-threads",String(r)),o=["-filter_complex_threads",String(r),"-filter_threads",String(r),...o]}o=[...o,"-progress","pipe:1","-nostats","-y"];let s=Ja,p=o;n.nice!=null&&process.platform!=="win32"&&(s="nice",p=["-n",String(n.nice),Ja,...o]);let c=(0,aa.spawn)(s,p,{cwd:t}),l="";c.stdout.on("data",f=>{let m=e5(f,a);m!=null&&i&&i(m)}),c.stderr.on("data",f=>{l+=f.toString()});let u=new Promise((f,m)=>{c.on("error",m),c.on("close",d=>{d===0?f(Ie.default.join(t,"output.mp4")):m(new Error(`ffmpeg exited ${d}
-${l.slice(-2e3)}`))})});return{proc:c,done:u}}var d5={},Cs;try{Cs=le.default.dirname((0,g0.fileURLToPath)(d5.url))}catch{Cs=process.cwd()}var qs=le.default.dirname(process.execPath),a5=process.platform==="win32"?"ffmpeg.exe":"ffmpeg",i5=ve.default.existsSync(le.default.join(qs,a5));function n5(){let t=Fs.default.homedir(),e=le.default.join(t,"Downloads"),a=ve.default.existsSync(e)?e:t;return le.default.join(a,"AutoEditor")}var ei=process.env.OUTPUT_DIR||n5(),r5=Math.max(0,parseInt(process.env.RENDER_THREADS||"0",10)||0),o5=process.env.RENDER_NICE!=null&&process.env.RENDER_NICE!==""?parseInt(process.env.RENDER_NICE,10):null,On=le.default.join(Fs.default.tmpdir(),"autoeditor-render");function ti(t){try{ve.default.rmSync(t,{recursive:!0,force:!0})}catch{}}var Ts=process.env.PORT||3000,s5=process.env.FRONTEND_ORIGIN||"*",m0=process.env.FRONTEND_DIR||(ve.default.existsSync(le.default.join(__dirname,"out","index.html"))?le.default.join(__dirname,"out"):(ve.default.existsSync(le.default.join(qs,"out","index.html"))?le.default.join(qs,"out"):le.default.join(Cs,"..","out")));ve.default.mkdirSync(On,{recursive:!0});for(let t of ve.default.readdirSync(On))ti(le.default.join(On,t));var ze=new Map,De=null,Os=t=>{De===t&&(De=null)},qn="libx264";process.env.FORCE_ENCODER?(qn=process.env.FORCE_ENCODER,console.log(`Video encoder: ${qn} (forced)`)):u0().then(t=>{qn=t,console.log(`Video encoder: ${t}${t==="libx264"?" (CPU)":" (GPU / hardware)"}`)});var Re=(0,Is.default)();Re.use((0,h0.default)({origin:s5}));Re.use(Is.default.json({limit:'50mb'}));Re.use(Is.default.urlencoded({extended:true,limit:'50mb'}));var partUploadMulter=(0,Rs.default)({storage:Rs.default.diskStorage({destination:(req,file,cb)=>cb(null,Fs.default.tmpdir()),filename:(req,file,cb)=>{let ext=(file.originalname.match(/\.([a-z0-9]+)$/i)||[,"bin"])[1].toLowerCase();cb(null,`part_tmp_${Date.now()}_${Math.random().toString(36).slice(2)}.${ext}`);}})});function c5(t,e,a){let i=v0.default.randomUUID(),n=le.default.join(On,i);ve.default.mkdirSync(n,{recursive:!0}),t.jobId=i,t.jobDir=n,a()}var p5=Rs.default.diskStorage({destination:(t,e,a)=>a(null,t.jobDir),filename:(t,e,a)=>{let i=String(e.fieldname).replace(/[^a-zA-Z0-9_-]/g,"_"),n=(e.originalname.match(/\.([a-z0-9]+)$/i)||[,"bin"])[1].toLowerCase();a(null,`${i}.${n}`)}}),l5=(0,Rs.default)({storage:p5});function Qa(t,e){let a=`data: ${JSON.stringify(e)}
+${l.slice(-2e3)}`))})});return{proc:c,done:u}}var d5={},Cs;try{Cs=le.default.dirname((0,g0.fileURLToPath)(d5.url))}catch{Cs=process.cwd()}var qs=le.default.dirname(process.execPath),a5=process.platform==="win32"?"ffmpeg.exe":"ffmpeg",i5=ve.default.existsSync(le.default.join(qs,a5));function n5(){let t=Fs.default.homedir(),e=le.default.join(t,"Downloads"),a=ve.default.existsSync(e)?e:t;return le.default.join(a,"AutoEditor")}var ei=process.env.OUTPUT_DIR||n5(),r5=Math.max(0,parseInt(process.env.RENDER_THREADS||"0",10)||0),o5=process.env.RENDER_NICE!=null&&process.env.RENDER_NICE!==""?parseInt(process.env.RENDER_NICE,10):null,On=le.default.join(Fs.default.tmpdir(),"autoeditor-render");function ti(t){try{ve.default.rmSync(t,{recursive:!0,force:!0})}catch{}}var Ts=process.env.PORT||3000,s5=process.env.FRONTEND_ORIGIN||"*",m0=process.env.FRONTEND_DIR||(ve.default.existsSync(le.default.join(__dirname,"out","index.html"))?le.default.join(__dirname,"out"):(ve.default.existsSync(le.default.join(qs,"out","index.html"))?le.default.join(qs,"out"):le.default.join(Cs,"..","out")));ve.default.mkdirSync(On,{recursive:!0});for(let t of ve.default.readdirSync(On))ti(le.default.join(On,t));var ze=new Map,De=null,Os=t=>{De===t&&(De=null)},qn="libx264";process.env.FORCE_ENCODER?(qn=process.env.FORCE_ENCODER,console.log(`Video encoder: ${qn} (forced)`)):u0().then(t=>{qn=t,console.log(`Video encoder: ${t}${t==="libx264"?" (CPU)":" (GPU / hardware)"}`)});var Re=(0,Is.default)();Re.use((0,h0.default)({origin:s5}));Re.use(Is.default.json({limit:'50mb'}));Re.use(Is.default.urlencoded({extended:true,limit:'50mb'}));var partUploadMulter=(0,Rs.default)({
+  storage:Rs.default.diskStorage({
+    destination:(req,file,cb)=>cb(null,Fs.default.tmpdir()),
+    filename:(req,file,cb)=>{
+      let ext=(file.originalname.match(/\.([a-z0-9]+)$/i)||[,"bin"])[1].toLowerCase();
+      cb(null,`part_tmp_${Date.now()}_${Math.random().toString(36).slice(2)}.${ext}`);
+    }
+  }),
+  limits:{fileSize:1024*1024*1024,fieldSize:50*1024*1024}
+});function c5(t,e,a){let i=v0.default.randomUUID(),n=le.default.join(On,i);ve.default.mkdirSync(n,{recursive:!0}),t.jobId=i,t.jobDir=n,a()}var p5=Rs.default.diskStorage({destination:(t,e,a)=>a(null,t.jobDir),filename:(t,e,a)=>{let i=String(e.fieldname).replace(/[^a-zA-Z0-9_-]/g,"_"),n=(e.originalname.match(/\.([a-z0-9]+)$/i)||[,"bin"])[1].toLowerCase();a(null,`${i}.${n}`)}}),l5=(0,Rs.default)({storage:p5});function Qa(t,e){let a=`data: ${JSON.stringify(e)}
 
 `;for(let i of t.listeners)i.write(a)}function Ps(t){for(let e of t.listeners)e.end();t.listeners.clear()}Re.get("/health",(t,e)=>e.json({ok:!0}));
 Re.post("/silence-detect",c5,l5.any(),async(t,e)=>{
@@ -92,6 +101,7 @@ Re.post("/silence-trim",c5,l5.any(),async(t,e)=>{
     cp.stdout.on('data',d=>out+=d.toString());
     cp.stderr.on('data',d=>err+=d.toString());
     cp.on('close',c=>{
+      if(e.headersSent) return;
       try{
         let parsed=JSON.parse(out);
         if(parsed.success){
@@ -101,10 +111,19 @@ Re.post("/silence-trim",c5,l5.any(),async(t,e)=>{
           ti(t.jobDir);
           e.status(500).json({error:parsed.error||"Trim failed"});
         }
-      }catch(x){ti(t.jobDir);e.status(500).json({error:out||err||"Trim failed"})}
+      }catch(x){
+        ti(t.jobDir);
+        if(!e.headersSent) e.status(500).json({error:out||err||"Trim failed"});
+      }
     });
-    cp.on('error',x=>{ti(t.jobDir);e.status(500).json({error:x.message})});
-  }catch(x){ti(t.jobDir);e.status(500).json({error:x.message})}
+    cp.on('error',x=>{
+      ti(t.jobDir);
+      if(!e.headersSent) e.status(500).json({error:x.message});
+    });
+  }catch(x){
+    ti(t.jobDir);
+    if(!e.headersSent) e.status(500).json({error:x.message});
+  }
 });
 Re.post("/video-silence-detect",c5,l5.any(),async(t,e)=>{
   try{
@@ -121,10 +140,18 @@ Re.post("/video-silence-detect",c5,l5.any(),async(t,e)=>{
     cp.stderr.on('data',d=>err+=d.toString());
     cp.on('close',c=>{
       ti(t.jobDir);
-      try{e.json(JSON.parse(out))}catch(x){e.status(500).json({error:out||err||"Detection failed"})}
+      if(!e.headersSent) {
+        try{e.json(JSON.parse(out))}catch(x){e.status(500).json({error:out||err||"Detection failed"})}
+      }
     });
-    cp.on('error',x=>{ti(t.jobDir);e.status(500).json({error:x.message})});
-  }catch(x){ti(t.jobDir);e.status(500).json({error:x.message})}
+    cp.on('error',x=>{
+      ti(t.jobDir);
+      if(!e.headersSent) e.status(500).json({error:x.message});
+    });
+  }catch(x){
+    ti(t.jobDir);
+    if(!e.headersSent) e.status(500).json({error:x.message});
+  }
 });
 Re.post("/video-silence-trim",c5,l5.any(),async(t,e)=>{
   try{
@@ -141,6 +168,7 @@ Re.post("/video-silence-trim",c5,l5.any(),async(t,e)=>{
     cp.stdout.on('data',d=>out+=d.toString());
     cp.stderr.on('data',d=>err+=d.toString());
     cp.on('close',c=>{
+      if(e.headersSent) return;
       try{
         let parsed=JSON.parse(out);
         if(parsed.success){
@@ -150,10 +178,19 @@ Re.post("/video-silence-trim",c5,l5.any(),async(t,e)=>{
           ti(t.jobDir);
           e.status(500).json({error:parsed.error||"Video trim failed"});
         }
-      }catch(x){ti(t.jobDir);e.status(500).json({error:out||err||"Video trim failed"})}
+      }catch(x){
+        ti(t.jobDir);
+        if(!e.headersSent) e.status(500).json({error:out||err||"Video trim failed"});
+      }
     });
-    cp.on('error',x=>{ti(t.jobDir);e.status(500).json({error:x.message})});
-  }catch(x){ti(t.jobDir);e.status(500).json({error:x.message})}
+    cp.on('error',x=>{
+      ti(t.jobDir);
+      if(!e.headersSent) e.status(500).json({error:x.message});
+    });
+  }catch(x){
+    ti(t.jobDir);
+    if(!e.headersSent) e.status(500).json({error:x.message});
+  }
 });
 Re.post("/merge-and-process",c5,l5.any(),async(t,e)=>{
   try{
@@ -177,36 +214,37 @@ Re.post("/merge-and-process",c5,l5.any(),async(t,e)=>{
     if(sortedFiles.length===1){
       mergedPath=le.default.join(t.jobDir,sortedFiles[0].filename);
     }else{
-      let listContent=sortedFiles.map(f=>{
-        let absPath=le.default.join(t.jobDir,f.filename).replace(/\\/g,'/');
-        return `file '${absPath}'`;
-      }).join('\n');
-      let listPath=le.default.join(t.jobDir,'concat_list.txt');
-      ve.default.writeFileSync(listPath,listContent,'utf8');
       mergedPath=le.default.join(t.jobDir,'merged'+targetExt);
       await new Promise((resolve,reject)=>{
-        let concatArgs=['-f','concat','-safe','0','-i',listPath,'-c','copy','-y',mergedPath];
-        let p=(0,aa.spawn)(Ja,concatArgs,{cwd:t.jobDir});
+        let inputs=[];
+        let filterPipes='';
+        let concatInputs='';
+        sortedFiles.forEach((f,i)=>{
+          inputs.push('-i',le.default.join(t.jobDir,f.filename));
+          if(isVideo){
+            filterPipes+=`[${i}:v]scale=1280:720:force_original_aspect_ratio=decrease,pad=1280:720:(ow-iw)/2:(oh-ih)/2,setsar=1,fps=30,format=yuv420p[v${i}];`;
+            filterPipes+=`[${i}:a]aresample=async=1000:first_pts=0,asetpts=PTS-STARTPTS,aformat=sample_fmts=fltp:sample_rates=44100:channel_layouts=stereo[a${i}];`;
+            concatInputs+=`[v${i}][a${i}]`;
+          }else{
+            filterPipes+=`[${i}:a]aresample=async=1000:first_pts=0,asetpts=PTS-STARTPTS,aformat=sample_fmts=fltp:sample_rates=44100:channel_layouts=stereo[a${i}];`;
+            concatInputs+=`[a${i}]`;
+          }
+        });
+        let filterComplex=isVideo?
+          `${filterPipes}${concatInputs}concat=n=${sortedFiles.length}:v=1:a=1[outv][outa]`:
+          `${filterPipes}${concatInputs}concat=n=${sortedFiles.length}:v=0:a=1[outa]`;
+        let mergeArgs=isVideo?
+          ['-y',...inputs,'-filter_complex',filterComplex,'-map','[outv]','-map','[outa]','-threads','0','-c:v','libx264','-profile:v','main','-level','4.1','-preset','veryfast','-crf','19','-pix_fmt','yuv420p','-c:a','aac','-b:a','256k','-ar','44100','-ac','2','-movflags','+faststart',mergedPath]:
+          ['-y',...inputs,'-filter_complex',filterComplex,'-map','[outa]','-threads','0','-c:a','libmp3lame','-b:a','320k','-ar','44100','-ac','2','-id3v2_version','3','-write_xing','1',mergedPath];
+        let p=(0,aa.spawn)(Ja,mergeArgs,{cwd:t.jobDir});
         let errLog='';
         p.stderr.on('data',d=>errLog+=d.toString());
         p.on('close',code=>{
-          if(code===0&&ve.default.existsSync(mergedPath)&&ve.default.statSync(mergedPath).size>1000){
-            return resolve();
+          if(code===0&&ve.default.existsSync(mergedPath)&&ve.default.statSync(mergedPath).size>100){
+            resolve();
+          }else{
+            reject(new Error("FFmpeg merge failed: "+(errLog||"exit code "+code)));
           }
-          let fallbackArgs=isVideo?
-            ['-f','concat','-safe','0','-i',listPath,'-threads','0','-c:v','libx264','-preset','ultrafast','-c:a','aac','-b:a','192k','-y',mergedPath]:
-            ['-f','concat','-safe','0','-i',listPath,'-threads','0','-c:a','libmp3lame','-q:a','2','-y',mergedPath];
-          let p2=(0,aa.spawn)(Ja,fallbackArgs,{cwd:t.jobDir});
-          let errLog2='';
-          p2.stderr.on('data',d=>errLog2+=d.toString());
-          p2.on('close',code2=>{
-            if(code2===0&&ve.default.existsSync(mergedPath)){
-              resolve();
-            }else{
-              reject(new Error("FFmpeg merge failed: "+(errLog2||errLog||"Unknown error")));
-            }
-          });
-          p2.on('error',reject);
         });
         p.on('error',reject);
       });
@@ -239,32 +277,73 @@ Re.post("/merge-and-process",c5,l5.any(),async(t,e)=>{
     cp.on('error',x=>{ti(t.jobDir);e.status(500).json({error:x.message})});
   }catch(x){ti(t.jobDir);e.status(500).json({error:x.message})}
 });
-Re.post("/upload-part",partUploadMulter.any(),async(t,e)=>{
-  try{
-    let jobId=t.body.jobId;
-    if(!jobId||!/^[a-zA-Z0-9_-]+$/.test(jobId)){
-      return e.status(400).json({error:"Invalid jobId"});
+Re.options("/process-parts",(t,e)=>{
+  let origin = t.headers.origin || '*';
+  e.setHeader('Access-Control-Allow-Origin', origin);
+  e.setHeader('Access-Control-Allow-Methods','GET, POST, OPTIONS');
+  e.setHeader('Access-Control-Allow-Headers','*');
+  if(origin !== '*') e.setHeader('Access-Control-Allow-Credentials','true');
+  return e.status(200).end();
+});
+Re.options("/upload-part",(t,e)=>{
+  let origin = t.headers.origin || '*';
+  e.setHeader('Access-Control-Allow-Origin', origin);
+  e.setHeader('Access-Control-Allow-Methods','GET, POST, OPTIONS');
+  e.setHeader('Access-Control-Allow-Headers','*');
+  if(origin !== '*') e.setHeader('Access-Control-Allow-Credentials','true');
+  return e.status(200).end();
+});
+Re.post("/upload-part",(t,e)=>{
+  let origin = t.headers.origin || '*';
+  e.setHeader('Access-Control-Allow-Origin', origin);
+  e.setHeader('Access-Control-Allow-Methods','GET, POST, OPTIONS');
+  e.setHeader('Access-Control-Allow-Headers','*');
+  if(origin !== '*') e.setHeader('Access-Control-Allow-Credentials','true');
+  partUploadMulter.any()(t,e,async(err)=>{
+    if(err){
+      console.error("Multer upload error:",err);
+      return e.status(400).json({success:false,error:err.message||"Part upload failed"});
     }
-    let partIndex=parseInt(t.body.partIndex||"0",10);
-    let jobDir=le.default.join(On,jobId);
-    if(!ve.default.existsSync(jobDir)){
-      ve.default.mkdirSync(jobDir,{recursive:true});
+    try{
+      let jobId=t.body.jobId;
+      if(!jobId||!/^[a-zA-Z0-9_-]+$/.test(jobId)){
+        return e.status(400).json({success:false,error:"Invalid jobId"});
+      }
+      let partIndex=parseInt(t.body.partIndex||"0",10);
+      let jobDir=le.default.join(On,jobId);
+      if(!ve.default.existsSync(jobDir)){
+        ve.default.mkdirSync(jobDir,{recursive:true});
+      }
+      if(!t.files||t.files.length===0){
+        return e.status(400).json({success:false,error:"No file uploaded for part"});
+      }
+      let uploadedFile=t.files[0];
+      let originalName=t.body.fileName||uploadedFile.originalname||("part_"+partIndex);
+      let ext=le.default.extname(originalName)||".mp3";
+      let destFilename=`part_${String(partIndex).padStart(4,'0')}_seq${ext}`;
+      let destPath=le.default.join(jobDir,destFilename);
+      ve.default.copyFileSync(uploadedFile.path,destPath);
+      try{ve.default.unlinkSync(uploadedFile.path);}catch(x){}
+
+      e.json({
+        success:true,
+        jobId,
+        partIndex,
+        filename:destFilename,
+        originalName
+      });
+    }catch(x){
+      console.error("Upload part error:",x);
+      e.status(500).json({success:false,error:x.message});
     }
-    if(!t.files||t.files.length===0){
-      return e.status(400).json({error:"No file uploaded for part"});
-    }
-    let uploadedFile=t.files[0];
-    let originalName=t.body.fileName||uploadedFile.originalname||("part_"+partIndex);
-    let safeName=originalName.replace(/[^a-zA-Z0-9._-]/g,"_");
-    let targetName=`part_${String(partIndex).padStart(4,'0')}_${safeName}`;
-    let targetPath=le.default.join(jobDir,targetName);
-    ve.default.renameSync(uploadedFile.path,targetPath);
-    return e.json({success:true,jobId,partIndex,fileName:targetName});
-  }catch(x){
-    return e.status(500).json({error:x.message});
-  }
+  });
 });
 Re.post("/process-parts",async(t,e)=>{
+  let origin = t.headers.origin || '*';
+  e.setHeader('Access-Control-Allow-Origin', origin);
+  e.setHeader('Access-Control-Allow-Methods','GET, POST, OPTIONS');
+  e.setHeader('Access-Control-Allow-Headers','*');
+  if(origin !== '*') e.setHeader('Access-Control-Allow-Credentials','true');
   try{
     let jobId=(t.body&&t.body.jobId)||t.query.jobId;
     if(!jobId||!/^[a-zA-Z0-9_-]+$/.test(jobId)){
@@ -292,36 +371,67 @@ Re.post("/process-parts",async(t,e)=>{
     if(allFiles.length===1){
       mergedPath=le.default.join(jobDir,allFiles[0]);
     }else{
-      let listContent=allFiles.map(f=>{
-        let absPath=le.default.join(jobDir,f).replace(/\\/g,'/');
-        return `file '${absPath}'`;
-      }).join('\n');
-      let listPath=le.default.join(jobDir,'concat_list.txt');
-      ve.default.writeFileSync(listPath,listContent,'utf8');
-
       await new Promise((resolve,reject)=>{
-        let concatArgs=['-f','concat','-safe','0','-i',listPath,'-c','copy','-y',mergedPath];
-        let p=(0,aa.spawn)(Ja,concatArgs,{cwd:jobDir});
+        let inputs=[];
+        let filterPipes='';
+        let concatInputs='';
+        let refW=1280;
+        let refH=720;
+        let refFps=30;
+
+        if(isVideo){
+          try{
+            let probe=(0,aa.spawnSync)("ffprobe",[
+              "-v","error",
+              "-select_streams","v:0",
+              "-show_entries","stream=width,height,r_frame_rate",
+              "-of","json",
+              le.default.join(jobDir,allFiles[0])
+            ],{timeout:6000});
+            let pj=JSON.parse(probe.stdout.toString()||"{}");
+            if(pj&&pj.streams&&pj.streams[0]){
+              let s=pj.streams[0];
+              if(s.width&&s.height){
+                refW=Math.max(320,Math.round(s.width/2)*2);
+                refH=Math.max(240,Math.round(s.height/2)*2);
+              }
+              if(s.r_frame_rate){
+                let parts=s.r_frame_rate.split('/');
+                if(parts.length===2&&parseFloat(parts[1])>0){
+                  let fpsCalc=Math.round(parseFloat(parts[0])/parseFloat(parts[1]));
+                  if(fpsCalc>=15&&fpsCalc<=60) refFps=fpsCalc;
+                }
+              }
+            }
+          }catch(e){}
+        }
+
+        allFiles.forEach((f,i)=>{
+          inputs.push('-i',le.default.join(jobDir,f));
+          if(isVideo){
+            filterPipes+=`[${i}:v]scale=${refW}:${refH}:force_original_aspect_ratio=decrease,pad=${refW}:${refH}:(ow-iw)/2:(oh-ih)/2,setsar=1,fps=${refFps},format=yuv420p[v${i}];`;
+            filterPipes+=`[${i}:a]aresample=async=1000:first_pts=0,asetpts=PTS-STARTPTS,aformat=sample_fmts=fltp:sample_rates=44100:channel_layouts=stereo[a${i}];`;
+            concatInputs+=`[v${i}][a${i}]`;
+          }else{
+            filterPipes+=`[${i}:a]aresample=async=1000:first_pts=0,asetpts=PTS-STARTPTS,aformat=sample_fmts=fltp:sample_rates=44100:channel_layouts=stereo[a${i}];`;
+            concatInputs+=`[a${i}]`;
+          }
+        });
+        let filterComplex=isVideo?
+          `${filterPipes}${concatInputs}concat=n=${allFiles.length}:v=1:a=1[outv][outa]`:
+          `${filterPipes}${concatInputs}concat=n=${allFiles.length}:v=0:a=1[outa]`;
+        let mergeArgs=isVideo?
+          ['-y',...inputs,'-filter_complex',filterComplex,'-map','[outv]','-map','[outa]','-threads','0','-c:v','libx264','-profile:v','main','-level','4.1','-preset','veryfast','-crf','19','-pix_fmt','yuv420p','-c:a','aac','-b:a','256k','-ar','44100','-ac','2','-movflags','+faststart',mergedPath]:
+          ['-y',...inputs,'-filter_complex',filterComplex,'-map','[outa]','-threads','0','-c:a','libmp3lame','-b:a','320k','-ar','44100','-ac','2','-id3v2_version','3','-write_xing','1',mergedPath];
+        let p=(0,aa.spawn)(Ja,mergeArgs,{cwd:jobDir});
         let errLog='';
         p.stderr.on('data',d=>errLog+=d.toString());
         p.on('close',code=>{
-          if(code===0&&ve.default.existsSync(mergedPath)&&ve.default.statSync(mergedPath).size>1000){
-            return resolve();
+          if(code===0&&ve.default.existsSync(mergedPath)&&ve.default.statSync(mergedPath).size>100){
+            resolve();
+          }else{
+            reject(new Error("FFmpeg merge failed: "+(errLog||"exit code "+code)));
           }
-          let fallbackArgs=isVideo?
-            ['-f','concat','-safe','0','-i',listPath,'-threads','0','-c:v','libx264','-profile:v','high','-level','4.1','-preset','veryfast','-crf','19','-pix_fmt','yuv420p','-c:a','aac','-b:a','256k','-ar','44100','-ac','2','-movflags','+faststart','-y',mergedPath]:
-            ['-f','concat','-safe','0','-i',listPath,'-threads','0','-c:a','libmp3lame','-b:a','256k','-ar','44100','-ac','2','-y',mergedPath];
-          let p2=(0,aa.spawn)(Ja,fallbackArgs,{cwd:jobDir});
-          let errLog2='';
-          p2.stderr.on('data',d=>errLog2+=d.toString());
-          p2.on('close',code2=>{
-            if(code2===0&&ve.default.existsSync(mergedPath)){
-              resolve();
-            }else{
-              reject(new Error("FFmpeg merge failed: "+(errLog2||errLog||"Unknown error")));
-            }
-          });
-          p2.on('error',reject);
         });
         p.on('error',reject);
       });
@@ -336,6 +446,7 @@ Re.post("/process-parts",async(t,e)=>{
     cp.stdout.on('data',d=>out+=d.toString());
     cp.stderr.on('data',d=>err+=d.toString());
     cp.on('close',c=>{
+      if(e.headersSent) return;
       try{
         let parsed=JSON.parse(out);
         if(parsed.success){
@@ -347,25 +458,768 @@ Re.post("/process-parts",async(t,e)=>{
           e.status(500).json({error:parsed.error||"Processing failed"});
         }
       }catch(x){
-        e.status(500).json({error:out||err||"Processing failed"});
+        if(!e.headersSent) e.status(500).json({error:out||err||"Processing failed"});
       }
     });
-    cp.on('error',x=>e.status(500).json({error:x.message}));
+    cp.on('error',x=>{
+      if(!e.headersSent) e.status(500).json({error:x.message});
+    });
   }catch(x){
-    return e.status(500).json({error:x.message});
+    if(!e.headersSent) return e.status(500).json({error:x.message});
   }
 });
-Re.get("/silence-download/:id/:file",(t,e)=>{
+Re.options("/api/audio/merge-direct",(t,e)=>{
+  let origin = t.headers.origin || '*';
+  e.setHeader('Access-Control-Allow-Origin', origin);
+  e.setHeader('Access-Control-Allow-Methods','GET, POST, OPTIONS');
+  e.setHeader('Access-Control-Allow-Headers','*');
+  if(origin !== '*') e.setHeader('Access-Control-Allow-Credentials','true');
+  return e.status(200).end();
+});
+Re.post("/api/audio/merge-direct",(t,e)=>{
+  let origin = t.headers.origin || '*';
+  e.setHeader('Access-Control-Allow-Origin', origin);
+  e.setHeader('Access-Control-Allow-Methods','GET, POST, OPTIONS');
+  e.setHeader('Access-Control-Allow-Headers','*');
+  if(origin !== '*') e.setHeader('Access-Control-Allow-Credentials','true');
+  partUploadMulter.any()(t,e,async(err)=>{
+    if(err){
+      console.error("Direct merge upload error:",err);
+      return e.status(400).json({success:false,error:err.message||"Upload failed"});
+    }
+    try{
+      let uploadedFiles=(t.files&&t.files.length>0)?t.files:[];
+      if(uploadedFiles.length<2){
+        return e.status(400).json({success:false,error:"At least 2 audio files required for merging"});
+      }
+
+      let jobId=(t.body&&t.body.jobId)||("am_"+Date.now()+"_"+Math.random().toString(36).slice(2,8));
+      let jobDir=le.default.join(On,jobId);
+      if(!ve.default.existsSync(jobDir)){
+        ve.default.mkdirSync(jobDir,{recursive:true});
+      }
+
+      let clientParts=[];
+      if(t.body&&t.body.partsMeta){
+        try{clientParts=JSON.parse(t.body.partsMeta);}catch(x){}
+      }
+
+      let savedFiles=[];
+      for(let i=0;i<uploadedFiles.length;i++){
+        let upFile=uploadedFiles[i];
+        let origName=(clientParts[i]&&clientParts[i].name)||upFile.originalname||`part_${i+1}.mp3`;
+        let ext=le.default.extname(origName)||'.mp3';
+        let destName=`part_${String(i).padStart(4,'0')}_seq${ext}`;
+        let destPath=le.default.join(jobDir,destName);
+        ve.default.copyFileSync(upFile.path,destPath);
+        try{ve.default.unlinkSync(upFile.path);}catch(x){}
+        savedFiles.push({filename:destName,origName,path:destPath});
+      }
+
+      // Measure part durations with ffprobe
+      let verifiedParts=[];
+      let cumTime=0;
+      for(let i=0;i<savedFiles.length;i++){
+        let sf=savedFiles[i];
+        let partDur=0;
+        try{
+          let probe=(0,aa.spawnSync)("ffprobe",[
+            "-v","error",
+            "-show_entries","format=duration",
+            "-of","default=noprint_wrappers=1:nokey=1",
+            sf.path
+          ],{timeout:5000});
+          let durVal=parseFloat(probe.stdout.toString().trim());
+          if(!isNaN(durVal)&&durVal>0)partDur=durVal;
+        }catch(x){}
+
+        let startT=cumTime;
+        let endT=cumTime+partDur;
+        cumTime=endT;
+
+        verifiedParts.push({
+          index:i+1,
+          filename:sf.filename,
+          name:sf.origName,
+          duration:partDur,
+          startTime:startT,
+          endTime:endT
+        });
+      }
+
+      let mergedPath=le.default.join(jobDir,'merged_audio.mp3');
+      let ffmpegPath=process.env.FFMPEG_PATH||"ffmpeg";
+
+      await new Promise((resolve,reject)=>{
+        let inputs=[];
+        let filterPipes='';
+        let concatInputs='';
+        savedFiles.forEach((sf,i)=>{
+          inputs.push('-i',sf.path);
+          filterPipes+=`[${i}:a]aresample=async=1000:first_pts=0,asetpts=PTS-STARTPTS,aformat=sample_fmts=fltp:sample_rates=44100:channel_layouts=stereo[a${i}];`;
+          concatInputs+=`[a${i}]`;
+        });
+        let filterComplex=`${filterPipes}${concatInputs}concat=n=${savedFiles.length}:v=0:a=1[outa]`;
+
+        let mergeArgs=[
+          '-y',
+          ...inputs,
+          '-filter_complex',filterComplex,
+          '-map','[outa]',
+          '-c:a','libmp3lame',
+          '-b:a','320k',
+          '-ar','44100',
+          '-ac','2',
+          '-id3v2_version','3',
+          '-write_xing','1',
+          mergedPath
+        ];
+
+        let p=(0,aa.spawn)(ffmpegPath,mergeArgs,{cwd:jobDir});
+        let errLog='';
+        p.stderr.on('data',d=>errLog+=d.toString());
+        p.on('close',code=>{
+          if(code===0&&ve.default.existsSync(mergedPath)&&ve.default.statSync(mergedPath).size>100){
+            resolve();
+          }else{
+            reject(new Error("Audio merge failed: "+(errLog||"FFmpeg exit "+code)));
+          }
+        });
+        p.on('error',reject);
+      });
+
+      let stat=ve.default.statSync(mergedPath);
+      let totalDuration=cumTime;
+      try{
+        let probe=(0,aa.spawnSync)("ffprobe",[
+          "-v","error",
+          "-show_entries","format=duration",
+          "-of","default=noprint_wrappers=1:nokey=1",
+          mergedPath
+        ],{timeout:4000});
+        let durVal=parseFloat(probe.stdout.toString().trim());
+        if(!isNaN(durVal)&&durVal>0)totalDuration=durVal;
+      }catch(x){}
+
+      return e.json({
+        success:true,
+        download_url:'/silence-download/'+jobId+'/merged_audio.mp3',
+        parts_count:savedFiles.length,
+        parts:verifiedParts.map(p=>p.name),
+        verified_parts:verifiedParts,
+        size:stat.size,
+        duration:totalDuration,
+        filename:'merged_audio.mp3'
+      });
+    }catch(x){
+      console.error("Direct merge processing error:",x);
+      return e.status(500).json({success:false,error:x.message});
+    }
+  });
+});
+
+Re.options("/api/audio/merge-only",(t,e)=>{
+  let origin = t.headers.origin || '*';
+  e.setHeader('Access-Control-Allow-Origin', origin);
+  e.setHeader('Access-Control-Allow-Methods','GET, POST, OPTIONS');
+  e.setHeader('Access-Control-Allow-Headers','*');
+  if(origin !== '*') e.setHeader('Access-Control-Allow-Credentials','true');
+  return e.status(200).end();
+});
+Re.post("/api/audio/merge-only",async(t,e)=>{
+  let origin = t.headers.origin || '*';
+  e.setHeader('Access-Control-Allow-Origin', origin);
+  e.setHeader('Access-Control-Allow-Methods','GET, POST, OPTIONS');
+  e.setHeader('Access-Control-Allow-Headers','*');
+  if(origin !== '*') e.setHeader('Access-Control-Allow-Credentials','true');
+  try{
+    let jobId=(t.body&&t.body.jobId)||t.query.jobId;
+    if(!jobId||!/^[a-zA-Z0-9_-]+$/.test(jobId)){
+      return e.status(400).json({success:false,error:"Invalid jobId"});
+    }
+    let jobDir=le.default.join(On,jobId);
+    if(!ve.default.existsSync(jobDir)){
+      return e.status(404).json({success:false,error:"Job session not found or expired"});
+    }
+
+    let expectedCount=parseInt(t.body&&t.body.expectedCount||t.body.totalParts||"0",10);
+
+    // Wait briefly if in-flight uploads are still flushing to disk
+    let allFiles=[];
+    for(let attempt=0;attempt<10;attempt++){
+      allFiles=ve.default.readdirSync(jobDir)
+        .filter(f=>f.startsWith("part_")&&!f.endsWith(".tmp"))
+        .sort((a,b)=>a.localeCompare(b,undefined,{numeric:true,sensitivity:"base"}));
+      if(expectedCount>0&&allFiles.length<expectedCount){
+        await new Promise(r=>setTimeout(r,300));
+      }else{
+        break;
+      }
+    }
+
+    if(allFiles.length===0){
+      return e.status(400).json({success:false,error:"No audio parts uploaded for this job"});
+    }
+
+    if(expectedCount>0&&allFiles.length<expectedCount){
+      return e.status(400).json({
+        success:false,
+        error:`Expected ${expectedCount} parts, but only ${allFiles.length} were received on the server. Please try uploading again.`
+      });
+    }
+
+    let clientParts=(t.body&&Array.isArray(t.body.parts))?t.body.parts:[];
+
+    // Measure individual part durations with ffprobe
+    let verifiedParts=[];
+    let cumTime=0;
+    for(let i=0;i<allFiles.length;i++){
+      let f=allFiles[i];
+      let pPath=le.default.join(jobDir,f);
+      let partDur=0;
+      try{
+        let probe=(0,aa.spawnSync)("ffprobe",[
+          "-v","error",
+          "-show_entries","format=duration",
+          "-of","default=noprint_wrappers=1:nokey=1",
+          pPath
+        ],{timeout:4000});
+        let durVal=parseFloat(probe.stdout.toString().trim());
+        if(!isNaN(durVal)&&durVal>0)partDur=durVal;
+      }catch(x){}
+
+      let origName=(clientParts[i]&&clientParts[i].name)?clientParts[i].name:f.replace(/^part_\d+_seq_/,'');
+      let startT=cumTime;
+      let endT=cumTime+partDur;
+      cumTime=endT;
+
+      verifiedParts.push({
+        index:i+1,
+        filename:f,
+        name:origName,
+        duration:partDur,
+        startTime:startT,
+        endTime:endT
+      });
+    }
+
+    let mergedPath=le.default.join(jobDir,'merged_audio.mp3');
+    let ffmpegPath=process.env.FFMPEG_PATH||"ffmpeg";
+
+    await new Promise((resolve,reject)=>{
+      let inputs=[];
+      let filterPipes='';
+      let concatInputs='';
+      allFiles.forEach((f,i)=>{
+        inputs.push('-i',le.default.join(jobDir,f));
+        filterPipes+=`[${i}:a]aresample=async=1000:first_pts=0,asetpts=PTS-STARTPTS,aformat=sample_fmts=fltp:sample_rates=44100:channel_layouts=stereo[a${i}];`;
+        concatInputs+=`[a${i}]`;
+      });
+      let filterComplex=`${filterPipes}${concatInputs}concat=n=${allFiles.length}:v=0:a=1[outa]`;
+
+      let mergeArgs=[
+        '-y',
+        ...inputs,
+        '-filter_complex',filterComplex,
+        '-map','[outa]',
+        '-c:a','libmp3lame',
+        '-b:a','320k',
+        '-ar','44100',
+        '-ac','2',
+        '-id3v2_version','3',
+        '-write_xing','1',
+        mergedPath
+      ];
+
+      let p=(0,aa.spawn)(ffmpegPath,mergeArgs,{cwd:jobDir});
+      let errLog='';
+      p.stderr.on('data',d=>errLog+=d.toString());
+      p.on('close',code=>{
+        if(code===0&&ve.default.existsSync(mergedPath)&&ve.default.statSync(mergedPath).size>100){
+          resolve();
+        }else{
+          reject(new Error("Audio merge failed: "+(errLog||"FFmpeg exit "+code)));
+        }
+      });
+      p.on('error',reject);
+    });
+
+    let stat=ve.default.statSync(mergedPath);
+    let totalDuration=cumTime;
+    try{
+      let probe=(0,aa.spawnSync)("ffprobe",[
+        "-v","error",
+        "-show_entries","format=duration",
+        "-of","default=noprint_wrappers=1:nokey=1",
+        mergedPath
+      ],{timeout:4000});
+      let durVal=parseFloat(probe.stdout.toString().trim());
+      if(!isNaN(durVal)&&durVal>0)totalDuration=durVal;
+    }catch(x){}
+
+    e.json({
+      success:true,
+      download_url:'/silence-download/'+jobId+'/merged_audio.mp3',
+      parts_count:allFiles.length,
+      parts:verifiedParts.map(p=>p.name),
+      verified_parts:verifiedParts,
+      size:stat.size,
+      duration:totalDuration,
+      filename:'merged_audio.mp3'
+    });
+  }catch(x){
+    console.error("Audio merge-only error:",x);
+    return e.status(500).json({success:false,error:x.message});
+  }
+});
+
+Re.options("/silence-download/:id/:file",(t,e)=>{
+  let origin = t.headers.origin || '*';
+  e.setHeader('Access-Control-Allow-Origin', origin);
+  e.setHeader('Access-Control-Allow-Headers','*');
+  e.setHeader('Access-Control-Allow-Methods','GET, HEAD, OPTIONS');
+  if(origin !== '*') e.setHeader('Access-Control-Allow-Credentials','true');
+  return e.status(200).end();
+});
+Re.head("/silence-download/:id/:file",(t,e)=>{
+  let origin = t.headers.origin || '*';
+  e.setHeader('Access-Control-Allow-Origin', origin);
+  e.setHeader('Access-Control-Allow-Headers','*');
+  e.setHeader('Access-Control-Allow-Methods','GET, HEAD, OPTIONS');
+  e.setHeader('Access-Control-Expose-Headers','Content-Disposition, Content-Length, Content-Range, Accept-Ranges');
+  if(origin !== '*') e.setHeader('Access-Control-Allow-Credentials','true');
+  e.setHeader('Accept-Ranges','bytes');
   let fp=le.default.join(On,t.params.id,t.params.file);
   if(ve.default.existsSync(fp)){
     let stat=ve.default.statSync(fp);
-    let total=stat.size;
     let ext=le.default.extname(t.params.file).toLowerCase();
     let isVid=ext==='.mp4'||ext==='.mov'||ext==='.mkv'||ext==='.webm';
     let mime=isVid?'video/mp4':(ext==='.mp3'?'audio/mpeg':'application/octet-stream');
+    let downloadName=t.query.name||(t.params.file.includes('merged_audio')?'merged_audio.mp3':(isVid?'clean_jumpcut_video.mp4':'clean_audio.mp3'));
+    downloadName = downloadName.replace(/["\r\n\/\\]/g, '_');
+    let encodedName = encodeURIComponent(downloadName);
+    if(t.query.download === '1' || t.query.save === '1' || t.query.direct === '1'){
+      e.setHeader('Content-Type',mime);
+      e.setHeader('Content-Disposition',`attachment; filename="${downloadName}"; filename*=UTF-8''${encodedName}`);
+      e.setHeader('X-Content-Type-Options', 'nosniff');
+    } else {
+      e.setHeader('Content-Type',mime);
+    }
+    e.setHeader('Content-Length',stat.size);
+    return e.status(200).end();
+  }
+  return e.status(404).end();
+});
+Re.get("/silence-download/:id/:file",(t,e)=>{
+  let origin = t.headers.origin || '*';
+  e.setHeader('Access-Control-Allow-Origin', origin);
+  e.setHeader('Access-Control-Allow-Headers','*');
+  e.setHeader('Access-Control-Allow-Methods','GET, HEAD, OPTIONS');
+  e.setHeader('Access-Control-Expose-Headers','Content-Disposition, Content-Length, Content-Range, Accept-Ranges');
+  if(origin !== '*') e.setHeader('Access-Control-Allow-Credentials','true');
+  e.setHeader('Accept-Ranges','bytes');
+  let jobDir=le.default.join(On,t.params.id);
+  let fp=le.default.join(jobDir,t.params.file);
+  if(!ve.default.existsSync(fp) && ve.default.existsSync(jobDir)){
+    try{
+      let candidates=ve.default.readdirSync(jobDir).filter(f=>!f.startsWith("part_")&&!f.endsWith(".txt")&&!f.endsWith(".tmp"));
+      if(candidates.length>0){
+        let pref=candidates.find(f=>f.includes("trimmed")||f.includes("merged"))||candidates[0];
+        fp=le.default.join(jobDir,pref);
+      }
+    }catch(x){}
+  }
+  if(ve.default.existsSync(fp)){
+    let stat=ve.default.statSync(fp);
+    let ext=le.default.extname(fp).toLowerCase();
+    let isVid=ext==='.mp4'||ext==='.mov'||ext==='.mkv'||ext==='.webm';
+    let mime=isVid?'video/mp4':(ext==='.mp3'?'audio/mpeg':'application/octet-stream');
+
+    let downloadName=t.query.name||(fp.includes('merged_audio')?'merged_audio.mp3':(isVid?'clean_jumpcut_video.mp4':'clean_audio.mp3'));
+    downloadName = downloadName.replace(/["\r\n\/\\]/g, '_');
+    let encodedName = encodeURIComponent(downloadName);
+
+    const isForceDownload = t.query.download === '1' || t.query.save === '1' || t.query.direct === '1';
+
+    if(isForceDownload){
+      e.setHeader('Content-Disposition',`attachment; filename="${downloadName}"; filename*=UTF-8''${encodedName}`);
+      e.setHeader('Content-Type', mime);
+      e.setHeader('X-Content-Type-Options', 'nosniff');
+      e.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate, max-age=0');
+      return e.download(fp, downloadName, (err) => {
+        if(err && !e.headersSent){
+          try{
+            e.setHeader('Content-Length', stat.size);
+            e.sendFile(fp,{acceptRanges:true, maxAge:0});
+          }catch(x){}
+        }
+      });
+    }
+
+    e.setHeader('Content-Type',mime);
+    return e.sendFile(fp,{acceptRanges:true, maxAge:0});
+  }else{
+    return e.status(404).json({error:"File not found or session expired"});
+  }
+});
+
+// Prepare audio download on server (guarantees a permanent HTTP URL for client-generated blobs)
+Re.options("/api/audio/prepare-download",(t,e)=>{
+  let origin = t.headers.origin || '*';
+  e.setHeader('Access-Control-Allow-Origin', origin);
+  e.setHeader('Access-Control-Allow-Methods','POST, OPTIONS');
+  e.setHeader('Access-Control-Allow-Headers','*');
+  if(origin !== '*') e.setHeader('Access-Control-Allow-Credentials','true');
+  return e.status(200).end();
+});
+Re.post("/api/audio/prepare-download", (t,e)=>{
+  let origin = t.headers.origin || '*';
+  e.setHeader('Access-Control-Allow-Origin', origin);
+  e.setHeader('Access-Control-Allow-Headers','*');
+  try {
+    const jobId = 'prep_' + Date.now() + '_' + Math.random().toString(36).slice(2, 7);
+    const jobDir = le.default.join(On, jobId);
+    ve.default.mkdirSync(jobDir, { recursive: true });
+    const filename = (t.body && t.body.filename) || 'merged_audio.mp3';
+    const filePath = le.default.join(jobDir, filename);
+
+    if (t.body && t.body.base64Data) {
+      let b64 = t.body.base64Data;
+      if (b64.includes(',')) b64 = b64.split(',')[1];
+      const buffer = Buffer.from(b64, 'base64');
+      ve.default.writeFileSync(filePath, buffer);
+      return e.json({
+        success: true,
+        jobId: jobId,
+        download_url: '/silence-download/' + jobId + '/' + filename,
+        filename: filename,
+        size: buffer.length
+      });
+    } else {
+      return e.status(400).json({ success: false, error: 'No audio data provided' });
+    }
+  } catch(err) {
+    console.error("prepare-download error:", err);
+    return e.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// Watermark Endpoints
+Re.options("/api/watermark/extract-frame",(t,e)=>{
+  let origin = t.headers.origin || '*';
+  e.setHeader('Access-Control-Allow-Origin', origin);
+  e.setHeader('Access-Control-Allow-Methods','GET, POST, OPTIONS');
+  e.setHeader('Access-Control-Allow-Headers','*');
+  if(origin !== '*') e.setHeader('Access-Control-Allow-Credentials','true');
+  return e.status(200).end();
+});
+Re.post("/api/watermark/extract-frame",(t,e)=>{
+  let origin = t.headers.origin || '*';
+  e.setHeader('Access-Control-Allow-Origin', origin);
+  e.setHeader('Access-Control-Allow-Methods','GET, POST, OPTIONS');
+  e.setHeader('Access-Control-Allow-Headers','*');
+  if(origin !== '*') e.setHeader('Access-Control-Allow-Credentials','true');
+  partUploadMulter.any()(t,e,async(err)=>{
+    if(err){
+      return e.status(400).json({success:false,error:err.message||"Upload failed"});
+    }
+    let uploadedFile=(t.files&&t.files[0])?t.files[0]:null;
+    if(!uploadedFile)return e.status(400).json({success:false,error:"No file uploaded"});
+
+    let tempDir=le.default.join(On,"extract_"+Date.now()+"_"+Math.random().toString(36).slice(2,7));
+    try{
+      ve.default.mkdirSync(tempDir,{recursive:true});
+      let ext=le.default.extname(uploadedFile.originalname||t.body.fileName||'video.mp4')||'.mp4';
+      let inputPath=le.default.join(tempDir,`input${ext}`);
+      let thumbPath=le.default.join(tempDir,`frame.jpg`);
+      ve.default.copyFileSync(uploadedFile.path,inputPath);
+      try{ve.default.unlinkSync(uploadedFile.path);}catch(x){}
+
+      let ffmpegPath=process.env.FFMPEG_PATH||"ffmpeg";
+      (0,aa.spawnSync)(ffmpegPath,[
+        "-ss","0.5",
+        "-i",inputPath,
+        "-vframes","1",
+        "-q:v","2",
+        "-vf","scale='min(720,iw)':-1",
+        "-y",thumbPath
+      ],{timeout:8000});
+
+      if(!ve.default.existsSync(thumbPath)||ve.default.statSync(thumbPath).size===0){
+        (0,aa.spawnSync)(ffmpegPath,[
+          "-ss","0.0",
+          "-i",inputPath,
+          "-vframes","1",
+          "-q:v","2",
+          "-vf","scale='min(720,iw)':-1",
+          "-y",thumbPath
+        ],{timeout:8000});
+      }
+
+      if(ve.default.existsSync(thumbPath)&&ve.default.statSync(thumbPath).size>0){
+        let buf=ve.default.readFileSync(thumbPath);
+        let thumbUrl="data:image/jpeg;base64,"+buf.toString('base64');
+        let aspect="9/16";
+        try{
+          let probe=(0,aa.spawnSync)("ffprobe",[
+            "-v","error",
+            "-select_streams","v:0",
+            "-show_entries","stream=width,height",
+            "-of","csv=s=x:p=0",
+            inputPath
+          ],{timeout:3000});
+          let dim=probe.stdout.toString().trim().split('x');
+          if(dim.length===2){
+            let w=parseInt(dim[0],10);
+            let h=parseInt(dim[1],10);
+            if(w&&h&&w>h)aspect="16/9";
+          }
+        }catch(x){}
+
+        try{ve.default.rmSync(tempDir,{recursive:true,force:true});}catch(x){}
+        return e.json({success:true,thumbUrl,aspect});
+      }else{
+        try{ve.default.rmSync(tempDir,{recursive:true,force:true});}catch(x){}
+        return e.status(500).json({success:false,error:"Failed to extract frame with ffmpeg"});
+      }
+    }catch(ex){
+      try{ve.default.rmSync(tempDir,{recursive:true,force:true});}catch(x){}
+      return e.status(500).json({success:false,error:ex.message});
+    }
+  });
+});
+
+Re.options("/api/watermark/upload-file",(t,e)=>{
+  let origin = t.headers.origin || '*';
+  e.setHeader('Access-Control-Allow-Origin', origin);
+  e.setHeader('Access-Control-Allow-Methods','GET, POST, OPTIONS');
+  e.setHeader('Access-Control-Allow-Headers','*');
+  if(origin !== '*') e.setHeader('Access-Control-Allow-Credentials','true');
+  return e.status(200).end();
+});
+Re.post("/api/watermark/upload-file",(t,e)=>{
+  let origin = t.headers.origin || '*';
+  e.setHeader('Access-Control-Allow-Origin', origin);
+  e.setHeader('Access-Control-Allow-Methods','GET, POST, OPTIONS');
+  e.setHeader('Access-Control-Allow-Headers','*');
+  if(origin !== '*') e.setHeader('Access-Control-Allow-Credentials','true');
+  partUploadMulter.any()(t,e,async(err)=>{
+    if(err){
+      console.error("Multer watermark upload error:",err);
+      return e.status(400).json({success:false,error:err.message||"Upload failed"});
+    }
+    try{
+      let jobId=t.body.jobId;
+      let fileType=t.body.fileType||'video';
+      let partIndex=t.body.partIndex||'0';
+      let originalName=t.body.fileName||'file.mp4';
+      if(!jobId)return e.status(400).json({success:false,error:"jobId is required"});
+
+      let jobDir=le.default.join(On,"wm_"+jobId);
+      ve.default.mkdirSync(jobDir,{recursive:true});
+
+      let uploadedFile=(t.files&&t.files[0])?t.files[0]:null;
+      if(!uploadedFile)return e.status(400).json({success:false,error:"No file uploaded"});
+
+      let ext=le.default.extname(originalName)||(fileType==='watermark'?'.png':'.mp4');
+      let targetFilename=fileType==='watermark'
+        ?`watermark_logo${ext}`
+        :`part_${String(partIndex).padStart(3,'0')}_${Date.now()}${ext}`;
+
+      let destPath=le.default.join(jobDir,targetFilename);
+      ve.default.copyFileSync(uploadedFile.path,destPath);
+      try{ve.default.unlinkSync(uploadedFile.path);}catch(x){}
+
+      let thumbBase64=null;
+      if(fileType==='video'){
+        try{
+          let thumbPath=le.default.join(jobDir,`thumb_${Date.now()}.jpg`);
+          let ffmpegPath=process.env.FFMPEG_PATH||"ffmpeg";
+          (0,aa.spawnSync)(ffmpegPath,[
+            "-ss","0.5",
+            "-i",destPath,
+            "-vframes","1",
+            "-q:v","3",
+            "-vf","scale=360:-1",
+            "-y",thumbPath
+          ],{timeout:5000});
+          if(ve.default.existsSync(thumbPath)){
+            let buf=ve.default.readFileSync(thumbPath);
+            thumbBase64="data:image/jpeg;base64,"+buf.toString('base64');
+            try{ve.default.unlinkSync(thumbPath);}catch(x){}
+          }
+        }catch(x){}
+      }
+
+      e.json({
+        success:true,
+        jobId,
+        filename:targetFilename,
+        originalName,
+        path:destPath,
+        thumbBase64
+      });
+    }catch(err){
+      console.error("Watermark upload error:",err);
+      e.status(500).json({success:false,error:err.message});
+    }
+  });
+});
+
+Re.options("/api/watermark/process",(t,e)=>{
+  let origin = t.headers.origin || '*';
+  e.setHeader('Access-Control-Allow-Origin', origin);
+  e.setHeader('Access-Control-Allow-Methods','GET, POST, OPTIONS');
+  e.setHeader('Access-Control-Allow-Headers','*');
+  if(origin !== '*') e.setHeader('Access-Control-Allow-Credentials','true');
+  return e.status(200).end();
+});
+Re.post("/api/watermark/process",async(t,e)=>{
+  let origin = t.headers.origin || '*';
+  e.setHeader('Access-Control-Allow-Origin', origin);
+  e.setHeader('Access-Control-Allow-Methods','GET, POST, OPTIONS');
+  e.setHeader('Access-Control-Allow-Headers','*');
+  if(origin !== '*') e.setHeader('Access-Control-Allow-Credentials','true');
+  try{
+    let{
+      jobId,
+      position='bottom-right',
+      scalePct=28,
+      normXPct=null,
+      normYPct=null,
+      normWPct=null,
+      opacity=0.95,
+      marginX=30,
+      marginY=30,
+      videos=[],
+      watermarkBase64=null
+    }=t.body;
+
+    if(!jobId)return e.status(400).json({error:"jobId is required"});
+    let jobDir=le.default.join(On,"wm_"+jobId);
+    if(!ve.default.existsSync(jobDir)){
+      ve.default.mkdirSync(jobDir,{recursive:true});
+    }
+
+    let wmImgPath=le.default.join(jobDir,"watermark_applied.png");
+
+    if(watermarkBase64&&typeof watermarkBase64==='string'){
+      let base64Data=watermarkBase64.replace(/^data:image\/\w+;base64,/,"");
+      ve.default.writeFileSync(wmImgPath,Buffer.from(base64Data,'base64'));
+    }else{
+      let existing=ve.default.readdirSync(jobDir).find(f=>f.startsWith('watermark_logo'));
+      if(existing){
+        wmImgPath=le.default.join(jobDir,existing);
+      }
+    }
+
+    if(!ve.default.existsSync(wmImgPath)){
+      return e.status(400).json({error:"Watermark image not found. Please select or upload a watermark."});
+    }
+
+    let dirFiles=ve.default.readdirSync(jobDir).filter(f=>f.startsWith('part_'));
+    dirFiles.sort();
+
+    let videoItems=[];
+    if(videos&&videos.length>0){
+      for(let v of videos){
+        let matched=dirFiles.find(df=>df.includes(v.filename)||df===v.filename);
+        let vpath=matched?le.default.join(jobDir,matched):le.default.join(jobDir,v.filename);
+        if(ve.default.existsSync(vpath)){
+          videoItems.push({
+            path:vpath,
+            original_name:v.originalName||v.name||v.filename,
+            index:videoItems.length
+          });
+        }
+      }
+    }
+
+    if(videoItems.length===0){
+      for(let idx=0;idx<dirFiles.length;idx++){
+        videoItems.push({
+          path:le.default.join(jobDir,dirFiles[idx]),
+          original_name:dirFiles[idx].replace(/^part_\d+_\d+_?/,''),
+          index:idx
+        });
+      }
+    }
+
+    if(videoItems.length===0){
+      return e.status(400).json({error:"No video parts found to watermark."});
+    }
+
+    let spec={
+      jobId,
+      outputDir:jobDir,
+      watermarkPath:wmImgPath,
+      videos:videoItems,
+      position,
+      normXPct:normXPct!=null?Number(normXPct):65.0,
+      normYPct:normYPct!=null?Number(normYPct):88.0,
+      normWPct:normWPct!=null?Number(normWPct):(Number(scalePct)||28.0),
+      scalePct:Number(scalePct)||28,
+      opacity:Number(opacity)||0.95,
+      marginX:Number(marginX)||30,
+      marginY:Number(marginY)||30
+    };
+
+    let specPath=le.default.join(jobDir,"spec.json");
+    ve.default.writeFileSync(specPath,JSON.stringify(spec,null,2));
+
+    let pyScript=le.default.join(process.cwd(),"watermark_engine.py");
+    let pyPath=process.env.PYTHON_PATH||"python3";
+    let ffmpegPath=process.env.FFMPEG_PATH||"ffmpeg";
+
+    let cp=(0,aa.spawn)(pyPath,[pyScript,"--spec",specPath,"--ffmpeg",ffmpegPath]);
+    let out="",err="";
+    cp.stdout.on("data",d=>{out+=d;});
+    cp.stderr.on("data",d=>{err+=d;});
+
+    cp.on("close",code=>{
+      try{
+        let parsed=JSON.parse(out.trim());
+        if(parsed.success){
+          for(let item of parsed.results){
+            if(item.status==='success'){
+              item.download_url=`/api/watermark/download/${jobId}/${item.output_filename}`;
+            }
+          }
+          parsed.zip_download_url=`/api/watermark/download-zip/${jobId}`;
+          e.json(parsed);
+        }else{
+          e.status(500).json({error:parsed.error||err||"Watermark processing failed."});
+        }
+      }catch(x){
+        console.error("JSON parse error:",x,"out:",out,"err:",err);
+        e.status(500).json({error:out||err||"Watermarking execution error."});
+      }
+    });
+
+    cp.on("error",x=>{
+      e.status(500).json({error:x.message});
+    });
+
+  }catch(err){
+    console.error("Watermark process error:",err);
+    e.status(500).json({error:err.message});
+  }
+});
+
+Re.get("/api/watermark/download/:id/:file",(t,e)=>{
+  let fp=le.default.join(On,"wm_"+t.params.id,t.params.file);
+  if(ve.default.existsSync(fp)){
+    let stat=ve.default.statSync(fp);
+    let total=stat.size;
+    let mime='video/mp4';
+
+    e.setHeader('Access-Control-Allow-Origin','*');
+    e.setHeader('Access-Control-Allow-Headers','*');
+    e.setHeader('Access-Control-Allow-Methods','GET, HEAD, OPTIONS');
 
     if(t.query.download==='1'){
-      let downloadName=isVid?'clean_jumpcut_video.mp4':'clean_audio.mp3';
+      let downloadName=t.query.name||t.params.file;
+      if(!downloadName.endsWith('.mp4'))downloadName+='.mp4';
       e.setHeader('Content-Disposition',`attachment; filename="${downloadName}"`);
       e.setHeader('Content-Type',mime);
       return e.sendFile(fp);
@@ -383,18 +1237,110 @@ Re.get("/silence-download/:id/:file",(t,e)=>{
         'Accept-Ranges':'bytes',
         'Content-Length':chunksize,
         'Content-Type':mime,
+        'Access-Control-Allow-Origin':'*'
       });
       fileStream.pipe(e);
     }else{
       e.writeHead(200,{
         'Content-Length':total,
         'Content-Type':mime,
-        'Accept-Ranges':'bytes'
+        'Accept-Ranges':'bytes',
+        'Access-Control-Allow-Origin':'*'
       });
       ve.default.createReadStream(fp).pipe(e);
     }
   }else{
     e.status(404).json({error:"File not found"});
+  }
+});
+
+Re.get("/api/watermark/download-zip/:id",(t,e)=>{
+  let jobDir=le.default.join(On,"wm_"+t.params.id);
+  let zipPath=le.default.join(jobDir,`watermarked_batch_${t.params.id}.zip`);
+  if(ve.default.existsSync(zipPath)){
+    e.setHeader('Access-Control-Allow-Origin','*');
+    e.setHeader('Content-Disposition','attachment; filename="watermarked_videos_batch.zip"');
+    e.setHeader('Content-Type','application/zip');
+    return e.sendFile(zipPath);
+  }else{
+    e.status(404).json({error:"ZIP file not found"});
+  }
+});
+Re.options("/api/watermark/remove",(t,e)=>{
+  let origin = t.headers.origin || '*';
+  e.setHeader('Access-Control-Allow-Origin', origin);
+  e.setHeader('Access-Control-Allow-Methods','GET, POST, OPTIONS');
+  e.setHeader('Access-Control-Allow-Headers','*');
+  if(origin !== '*') e.setHeader('Access-Control-Allow-Credentials','true');
+  return e.status(200).end();
+});
+Re.post("/api/watermark/remove",async(t,e)=>{
+  let origin = t.headers.origin || '*';
+  e.setHeader('Access-Control-Allow-Origin', origin);
+  e.setHeader('Access-Control-Allow-Methods','GET, POST, OPTIONS');
+  e.setHeader('Access-Control-Allow-Headers','*');
+  if(origin !== '*') e.setHeader('Access-Control-Allow-Credentials','true');
+  try{
+    let{jobId,videoFilename,x=0,y=0,w=100,h=60,band=2}=t.body;
+    if(!jobId)return e.status(400).json({error:"jobId is required"});
+    let jobDir=le.default.join(On,"wm_"+jobId);
+    if(!ve.default.existsSync(jobDir))return e.status(404).json({error:"Job session not found"});
+    let dirFiles=ve.default.readdirSync(jobDir).filter(f=>f.startsWith('part_'));
+    let inPath=dirFiles.length>0?le.default.join(jobDir,dirFiles[0]):null;
+    if(videoFilename&&ve.default.existsSync(le.default.join(jobDir,videoFilename))){
+      inPath=le.default.join(jobDir,videoFilename);
+    }
+    if(!inPath||!ve.default.existsSync(inPath))return e.status(404).json({error:"Input video not found"});
+    let outFilename=`delogo_out_${Date.now()}.mp4`;
+    let outPath=le.default.join(jobDir,outFilename);
+    let ffmpegPath=process.env.FFMPEG_PATH||"ffmpeg";
+
+    let vidW=1280,vidH=720;
+    try{
+      let probeRes=(0,aa.spawnSync)("ffprobe",["-v","error","-select_streams","v:0","-show_entries","stream=width,height","-of","csv=s=x:p=0",inPath],{encoding:'utf8'});
+      if(probeRes.stdout&&probeRes.stdout.trim()){
+        let parts=probeRes.stdout.trim().split('x');
+        if(parts.length===2){
+          vidW=parseInt(parts[0],10)||1280;
+          vidH=parseInt(parts[1],10)||720;
+        }
+      }
+    }catch(e){}
+
+    let featherBand=Math.max(1,Math.min(5,parseInt(band,10)||2));
+    let posX=Math.max(featherBand,parseInt(x,10)||featherBand);
+    let posY=Math.max(featherBand,parseInt(y,10)||featherBand);
+    let width=Math.max(4,parseInt(w,10)||100);
+    let height=Math.max(4,parseInt(h,10)||60);
+
+    if(posX+width+featherBand>vidW) width=Math.max(4,vidW-posX-featherBand);
+    if(posY+height+featherBand>vidH) height=Math.max(4,vidH-posY-featherBand);
+    if(posX<featherBand) posX=featherBand;
+    if(posY<featherBand) posY=featherBand;
+
+    let delogoFilter=`delogo=x=${posX}:y=${posY}:w=${width}:h=${height}:band=${featherBand}:show=0`;
+    let args=[
+      "-y",
+      "-i",inPath,
+      "-vf",delogoFilter,
+      "-c:v","libx264",
+      "-preset","veryfast",
+      "-crf","22",
+      "-c:a","copy",
+      "-movflags","+faststart",
+      outPath
+    ];
+    let res=(0,aa.spawnSync)(ffmpegPath,args,{timeout:180000});
+    if(res.status!==0){
+      return e.status(500).json({error:"FFmpeg delogo processing failed: "+(res.stderr?res.stderr.toString().slice(-400):"unknown error")});
+    }
+    return e.json({
+      success:true,
+      outputFilename:outFilename,
+      downloadUrl:`/api/watermark/download/${jobId}/${outFilename}`
+    });
+  }catch(err){
+    return e.status(500).json({error:err.message||"Failed to remove watermark"});
   }
 });Re.get("/status",(t,e)=>{e.json([...ze.entries()].map(([a,i])=>({id:a,status:i.status,percent:Math.round(i.progress*100)})))});Re.get("/active",(t,e)=>{let a=De&&ze.get(De);if(a&&a.status==="running")return e.json({jobId:De,percent:Math.round(a.progress*100)});e.json({jobId:null})});function u5(t,e,a){let i=De&&ze.get(De);if(i&&i.status==="running")return ti(t.jobDir),e.status(409).json({error:"A render is already in progress.",jobId:De,percent:Math.round(i.progress*100)});a()}Re.post("/render",c5,u5,l5.any(),async(t,e)=>{try{let a=JSON.parse(t.body.spec),i={};for(let l of t.files)i[l.fieldname]=l.filename;let{paths:n,audioName:r,capChain:o,audible:s}=await f0(t.jobDir,a,i),p={dir:t.jobDir,proc:null,total:0,progress:0,status:"running",outPath:null,error:null,listeners:new Set,_loggedPct:-5};ze.set(t.jobId,p),De=t.jobId,console.log("Render started \u2014 you can close the browser; it keeps rendering here.");let c=l=>{let u=l0(a,{paths:n,audioName:r,capChain:o,encoder:l,audible:s});for(let d of u.filterFiles)ve.default.writeFileSync(le.default.join(t.jobDir,d.name),d.text);p.total=u.total;let{proc:f,done:m}=d0(t.jobDir,u.args,u.total,d=>{p.progress=d,Qa(p,{progress:d});let h=Math.floor(d*100);h>=p._loggedPct+5&&(p._loggedPct=h,console.log(`Rendering\u2026 ${h}%`))},{threads:r5,nice:o5});p.proc=f,m.then(d=>{p.status="done",p.progress=1;let h=null;if(ei)try{ve.default.mkdirSync(ei,{recursive:!0});let v=new Date().toISOString().replace(/[:.]/g,"-").slice(0,19);h=le.default.join(ei,`autoeditor-${v}-${t.jobId.slice(0,6)}.mp4`),ve.default.copyFileSync(d,h),console.log("Saved video to "+h)}catch(v){console.warn("Could not save to OUTPUT_DIR: "+v.message),h=null}p.outPath=h||d,p.saved=h,Qa(p,{progress:1}),Qa(p,{done:!0,saved:h}),Ps(p),Os(t.jobId)}).catch(d=>{if(p.status!=="cancelled"){if(l!=="libx264"){console.warn(`Encoder ${l} failed \u2014 falling back to libx264. ${String(d.message||d).split(`
 `)[0]}`),p.progress=0,Qa(p,{progress:0}),c("libx264");return}p.status="error",p.error=String(d.message||d),console.error("Render failed: "+p.error.split(`

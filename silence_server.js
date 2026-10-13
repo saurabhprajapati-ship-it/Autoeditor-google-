@@ -270,10 +270,16 @@ const server = http.createServer(async (req, res) => {
 
         if (fs.existsSync(filePath)) {
             const stat = fs.statSync(filePath);
+            const isDownload = (req.url && (req.url.includes('download=1') || req.url.includes('save=1') || req.url.includes('direct=1')));
+            const mimeType = isDownload ? 'application/octet-stream' : 'audio/mpeg';
             res.writeHead(200, {
-                'Content-Type': 'audio/mpeg',
+                'Content-Type': mimeType,
+                'X-Content-Type-Options': 'nosniff',
                 'Content-Length': stat.size,
-                'Content-Disposition': `attachment; filename="${filename}"`
+                'Content-Disposition': `attachment; filename="${filename}"`,
+                'Cache-Control': 'no-cache, no-store, must-revalidate',
+                'Pragma': 'no-cache',
+                'Expires': '0'
             });
             fs.createReadStream(filePath).pipe(res);
 

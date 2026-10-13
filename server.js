@@ -1,6 +1,14 @@
 const fs = require('fs');
 const path = require('path');
 
+// Process level stability guards - prevents dev-server restart & iframe reloads
+process.on('uncaughtException', (err) => {
+    console.error('Handled server uncaughtException:', err && err.stack ? err.stack : err);
+});
+process.on('unhandledRejection', (reason) => {
+    console.error('Handled server unhandledRejection:', reason);
+});
+
 // Auto-heal frontend assets from public_static if out/ files are ever removed
 function ensureFrontendAssets() {
     try {
@@ -14,7 +22,7 @@ function ensureFrontendAssets() {
             for (const f of files) {
                 const srcPath = path.join(backupDir, f);
                 const destPath = path.join(outDir, f);
-                if (!fs.existsSync(destPath)) {
+                if (!fs.existsSync(destPath) || fs.statSync(srcPath).mtimeMs > fs.statSync(destPath).mtimeMs) {
                     fs.copyFileSync(srcPath, destPath);
                 }
             }

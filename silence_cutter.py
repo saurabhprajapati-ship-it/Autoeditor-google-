@@ -43,7 +43,7 @@ def has_audio_stream(input_path):
     return True
 
 
-def detect_silence(ffmpeg_path, input_path, min_silence, threshold):
+def detect_silence(ffmpeg_path, input_path, min_silence, threshold, total_duration=None):
     """
     Run FFmpeg silencedetect filter and parse the output.
     Returns a list of (start, end) tuples for each silent segment.
@@ -85,6 +85,10 @@ def detect_silence(ffmpeg_path, input_path, min_silence, threshold):
             silence_end = float(m_end.group(1))
             silences.append((current_start, silence_end))
             current_start = None
+
+    # Handle trailing silence where FFmpeg reaches EOF without a silence_end line
+    if current_start is not None and total_duration is not None and total_duration > current_start:
+        silences.append((current_start, total_duration))
 
     return silences
 
@@ -155,17 +159,20 @@ def compute_speech_segments(silences, total_duration, padding):
     prev_end = 0.0
 
     for silence_start, silence_end in silences:
-        seg_start = max(0.0, prev_end - padding) if prev_end > 0 else 0.0
-        seg_end = min(total_duration, silence_start + padding)
-
-        if seg_end > seg_start + 0.03:
-            raw_segments.append((seg_start, seg_end))
+        # Only add a speech segment if there is actual audio before this silence
+        if silence_start > padding:
+            seg_start = max(0.0, prev_end - padding) if prev_end > 0 else 0.0
+            seg_end = min(total_duration, silence_start + padding)
+            if seg_end > seg_start + 0.03:
+                raw_segments.append((seg_start, seg_end))
 
         prev_end = silence_end
 
-    last_start = max(0.0, prev_end - padding)
-    if total_duration > last_start + 0.03:
-        raw_segments.append((last_start, total_duration))
+    # Only add trailing speech segment if speech exists after the last silence
+    if prev_end < total_duration - padding:
+        last_start = max(0.0, prev_end - padding)
+        if total_duration > last_start + 0.03:
+            raw_segments.append((last_start, total_duration))
 
     if not raw_segments:
         return [{"start": 0.0, "end": total_duration,
@@ -211,7 +218,7 @@ def trim_audio(ffmpeg_path, input_path, output_path, segments):
         end = seg["original_end"]
         label = f"a{i}"
         filter_parts.append(
-            f"[0:a]atrim=start={start:.3f}:end={end:.3f},asetpts=PTS-STARTPTS[{label}]"
+            f"[0:a]atrim=start={start:.3f}:end={end:.3f},asetpts=PTS-STARTPTS,aresample=async=1000:first_pts=0,aformat=sample_fmts=fltp:sample_rates=44100:channel_layouts=stereo[{label}]"
         )
         concat_inputs.append(f"[{label}]")
 
@@ -235,7 +242,7 @@ def trim_audio(ffmpeg_path, input_path, output_path, segments):
 
     ext = os.path.splitext(output_path)[1].lower()
     if ext in (".mp3",):
-        cmd.extend(["-c:a", "libmp3lame", "-b:a", "256k", "-ar", "44100", "-ac", "2"])
+        cmd.extend(["-c:a", "libmp3lame", "-b:a", "320k", "-ar", "44100", "-ac", "2", "-id3v2_version", "3", "-write_xing", "1"])
     elif ext in (".wav",):
         cmd.extend(["-c:a", "pcm_s16le", "-ar", "44100", "-ac", "2"])
     elif ext in (".ogg",):
@@ -286,7 +293,7 @@ def trim_video(ffmpeg_path, input_path, output_path, segments):
             f"[0:v]trim=start={start:.3f}:end={end:.3f},setpts=PTS-STARTPTS[{v_label}]"
         )
         filter_parts.append(
-            f"[0:a]atrim=start={start:.3f}:end={end:.3f},asetpts=PTS-STARTPTS[{a_label}]"
+            f"[0:a]atrim=start={start:.3f}:end={end:.3f},asetpts=PTS-STARTPTS,aformat=sample_fmts=fltp:sample_rates=44100:channel_layouts=stereo[{a_label}]"
         )
         concat_inputs.append(f"[{v_label}][{a_label}]")
 
@@ -382,7 +389,8 @@ def main():
 
         silences = detect_silence(
             args.ffmpeg, args.input,
-            args.min_silence, args.threshold
+            args.min_silence, args.threshold,
+            total_duration
         )
 
         segments = compute_speech_segments(silences, total_duration, args.padding)
@@ -407,7 +415,22 @@ def main():
         is_video = args.is_video or is_video_file(args.input) or is_video_file(args.output)
 
         if len(silences) == 0:
-            shutil.copy2(args.input, args.output)
+            if is_video:
+                in_ext = os.path.splitext(args.input)[1].lower()
+                out_ext = os.path.splitext(args.output)[1].lower()
+                if in_ext == out_ext and in_ext in (".mp4", ".mov", ".mkv", ".webm"):
+                    shutil.copy2(args.input, args.output)
+                else:
+                    subprocess.run([args.ffmpeg, "-y", "-i", args.input, "-c:v", "libx264", "-preset", "veryfast", "-crf", "19", "-c:a", "aac", "-b:a", "192k", "-movflags", "+faststart", args.output], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            else:
+                out_ext = os.path.splitext(args.output)[1].lower()
+                if out_ext in (".mp3",):
+                    subprocess.run([args.ffmpeg, "-y", "-i", args.input, "-c:a", "libmp3lame", "-b:a", "320k", "-ar", "44100", "-ac", "2", "-id3v2_version", "3", "-write_xing", "1", args.output], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                elif out_ext in (".wav",):
+                    subprocess.run([args.ffmpeg, "-y", "-i", args.input, "-c:a", "pcm_s16le", "-ar", "44100", "-ac", "2", args.output], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                else:
+                    shutil.copy2(args.input, args.output)
+
             result = {
                 "success": True,
                 "original_duration": round(total_duration, 3),
@@ -427,6 +450,11 @@ def main():
             trim_video(args.ffmpeg, args.input, args.output, segments)
         else:
             trim_audio(args.ffmpeg, args.input, args.output, segments)
+
+        actual_dur = get_media_duration(args.ffmpeg, args.output)
+        if actual_dur > 0:
+            trimmed_duration = actual_dur
+            silence_removed = max(0.0, total_duration - trimmed_duration)
 
         result = {
             "success": True,
